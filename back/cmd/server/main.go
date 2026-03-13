@@ -1,29 +1,19 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/shizuku86/kairo-webapp/back/internal/router"
 )
-
-func healthHandler(w http.ResponseWriter, r *http.Request) {
-	resp := map[string]string{
-		"status": "ok",
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(resp)
-}
 
 func main() {
 
-	mux := http.NewServeMux()
-
-	mux.HandleFunc("/v1/health", healthHandler)
+	r := router.NewRouter()
 
 	log.Println("API server started :8000")
 
-	err := http.ListenAndServe(":8000", mux)
+	err := http.ListenAndServe(":8000", r)
 	if err != nil {
 		log.Fatal(err)
 	}
